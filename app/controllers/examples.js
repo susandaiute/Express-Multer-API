@@ -5,13 +5,13 @@ const models = require('app/models');
 const Example = models.example;
 
 const index = (req, res, next) => {
-  Example.find().exec()
+  Example.find()
     .then(examples => res.json({ examples }))
     .catch(err => next(err));
 };
 
 const show = (req, res, next) => {
-  Example.findById(req.params.id).exec()
+  Example.findById(req.params.id)
     .then(example => example ? res.json({ example }) : next())
     .catch(err => next(err));
 };
@@ -23,7 +23,7 @@ const create = (req, res, next) => {
 };
 
 const update = (req, res, next) => {
-  Example.findById(req.params.id).exec()
+  Example.findById(req.params.id)
     .then(example => {
       if (!example) {
         return next();
@@ -36,7 +36,7 @@ const update = (req, res, next) => {
 };
 
 const destroy = (req, res, next) => {
-  Example.findById(req.params.id).exec()
+  Example.findById(req.params.id)
     .then(example => {
       if (!example) {
         return next();

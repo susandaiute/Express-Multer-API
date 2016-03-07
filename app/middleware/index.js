@@ -8,15 +8,19 @@ const bodyParser = require('body-parser');
 
 const loader = require('lib/wiring/loader');
 
-const init = (app) => {
+const before = (app) => {
   app.use(favicon(path.join(app.get('root'), 'public', 'favicon.ico')));
   app.use(logger('dev'));
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({ extended: true }));
+};
+
+const after = (app) => {
   app.use(express.static(path.join(app.get('root'), 'public')));
 };
 
 const middleware = loader(__filename);
-middleware.init = init;
+middleware.before = before;
+middleware.after = after;
 
 module.exports = middleware;

@@ -6,11 +6,13 @@ const middleware = require('app/middleware');
 
 app.set('root', __dirname);
 
-middleware.init(app);
+middleware.before(app);
 
 const routes = require('config/routes');
 
 app.use(routes.router);
+
+middleware.after(app);
 
 // catch 404 and forward to error handler
 app.use(middleware['404']);

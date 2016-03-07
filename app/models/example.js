@@ -5,10 +5,10 @@ const mongoose = require('mongoose');
 const exampleSchema = new mongoose.Schema({
   text: String,
 
-  // owner: {
-  //   type: mongoose.Schema.Types.ObjectId,
-  //   required: false,
-  // },
+  _owner: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+  },
 }, {
   timestamps: true,
   toJSON: { virtuals: true },

@@ -22,27 +22,27 @@ const userSchema = new mongoose.Schema({
 userSchema.plugin(uniqueValidator);
 
 userSchema.methods.comparePassword = function (password) {
-  let passwordDigest = this.passwordDigest;
+  let _this = this;
 
   return new Promise((resolve, reject) =>
-    bcrypt.compare(password, passwordDigest, (err, data) =>
-        err ? reject(err) : resolve(data)));
+    bcrypt.compare(password, _this.passwordDigest, (err, data) =>
+        err ? reject(err) : resolve(data))
+    ).then(() => _this);
 };
 
 userSchema.methods.setPassword = function (password) {
   var _this = this;
 
-  return new Promise((resolve, reject) => {
-    bcrypt.genSalt(16, (err, salt) =>
+  return new Promise((resolve, reject) =>
+    bcrypt.genSalt(null, (err, salt) =>
         err ? reject(err) : resolve(salt))
-    .then((salt) =>
-      new Promise((resolve, reject) =>
-        bcrypt.hash(password, salt, (err, data) =>
-          err ? reject(err) : resolve(data))))
-    .then((digest) => {
-      _this.passwordDigest = digest;
-      return _this.save();
-    });
+  ).then((salt) =>
+    new Promise((resolve, reject) =>
+      bcrypt.hash(password, salt, (err, data) =>
+        err ? reject(err) : resolve(data)))
+  ).then((digest) => {
+    _this.passwordDigest = digest;
+    return _this.save();
   });
 };
 

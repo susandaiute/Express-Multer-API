@@ -4,6 +4,11 @@ const mongoose = require('mongoose');
 
 const exampleSchema = new mongoose.Schema({
   text: String,
+
+  // owner: {
+  //   type: mongoose.Schema.Types.ObjectId,
+  //   required: false,
+  // },
 }, {
   timestamps: true,
   toJSON: { virtuals: true },

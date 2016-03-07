@@ -23,6 +23,8 @@ const create = (req, res, next) => {
 };
 
 const update = (req, res, next) => {
+  //let search = {_id: req.params.id, owner: req.current_user.id};
+  //Example.findOneAndUpdate(search, reg.body.example)
   Example.findById(req.params.id)
     .then(example => {
       if (!example) {

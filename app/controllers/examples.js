@@ -4,6 +4,8 @@ const controller = require('lib/wiring/controller');
 const models = require('app/models');
 const Example = models.example;
 
+const authenticate = require('./concerns/authenticate');
+
 const index = (req, res, next) => {
   Example.find()
     .then(examples => res.json({ examples }))
@@ -56,4 +58,6 @@ module.exports = controller({
   create,
   update,
   destroy,
-});
+}, { before: [
+  { method: authenticate, except: ['index', 'show'] },
+], });

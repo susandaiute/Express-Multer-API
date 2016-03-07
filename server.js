@@ -12,10 +12,6 @@ const routes = require('config/routes');
 
 app.use(routes.router);
 
-// app.get('/', (req, res) => {
-//   res.send('Hello, World!\n');
-// });
-
 // catch 404 and forward to error handler
 app.use(middleware['404']);
 

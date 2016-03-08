@@ -5,10 +5,16 @@ const path = require('path');
 const favicon = require('serve-favicon');
 const logger = require('morgan');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 
 const loader = require('lib/wiring/loader');
 
+var corsOptions = {
+  origin: process.env.GITHUB_IO_URL || 'http://localhost:8080',
+};
+
 const before = (app) => {
+  app.use(cors(corsOptions));
   app.use(favicon(path.join(app.get('root'), 'public', 'favicon.ico')));
   app.use(logger('dev'));
   app.use(bodyParser.json());

@@ -6,7 +6,12 @@ authentication and common middlewares.
 This template follows Rails-like conventions for organizing controller and
 model code, and has a routing layer which is similar to the Rils routing DSL.
 
-## Updating Dependencies
+## Dependencies
+
+Install with `npm install`.
+
+-   [`express`](http://expressjs.com/)
+-   [`mongoose`](http://mongoosejs.com/)
 
 At the beginning of each cohort, update the versions in
 [`package.json`](package.json) by replace all versions with a glob (`*`) and

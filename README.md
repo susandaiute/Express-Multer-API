@@ -50,7 +50,7 @@ object stored in the `grunt` directory.
 
 Developers should store JavaScript files in [`app/controllers`](app/controllers)
  and [`app/models`](app/models).
-Routes are stored in [`config/routes.rb`](config/routes.rb)
+Routes are stored in [`config/routes.js`](config/routes.js)
 
 ## Tasks
 

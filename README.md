@@ -35,6 +35,9 @@ Fix any conflicts.
     change, you should `npm install -g nodemon` and use `nodemon` instead of
     `npm start`.
 
+In order to make requests from your deployed client application, you will need
+to set `GITHUB_IO_URL` in the environment.
+
 ## Structure
 
 Dependencies are stored in [`package.json`](package.json).

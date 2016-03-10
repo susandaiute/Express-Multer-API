@@ -35,6 +35,7 @@ const update = (req, res, next) => {
         return next();
       }
 
+      delete req.body._owner;  // disallow owner reassignment.
       return example.update(req.body.example)
         .then(() => res.sendStatus(200));
     })

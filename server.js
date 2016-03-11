@@ -1,5 +1,9 @@
 'use strict';
 
+require('dotenv').load({
+  silent: true,  // suppress missing `.env` warning
+});
+
 const express = require('express');
 const app = express();
 const middleware = require('app/middleware');

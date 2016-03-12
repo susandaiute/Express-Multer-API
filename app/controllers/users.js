@@ -10,6 +10,8 @@ const crypto = require('crypto');
 
 const authenticate = require('./concerns/authenticate');
 
+const HttpError = require('lib/wiring/http-error');
+
 const getToken = () =>
   new Promise((resolve, reject) =>
     crypto.randomBytes(16, (err, data) =>
@@ -20,16 +22,22 @@ const getToken = () =>
 const userFilter = { passwordDigest: 0, token: 0 };
 
 const index = (req, res, next) => {
-  User.find({}, userFilter).exec()
+  User.find({}, userFilter)
     .then(users => res.json({ users }))
     .catch(err => next(err));
 };
 
 const show = (req, res, next) => {
-  User.findById(req.params.id, userFilter).exec()
+  User.findById(req.params.id, userFilter)
     .then(user => user ? res.json({ user }) : next())
     .catch(err => next(err));
 };
+
+const makeErrorHandler = (res, next) =>
+  error =>
+    error && error.name && error.name === 'ValidationError' ?
+      res.status(400).json({ error }) :
+    next(error);
 
 const signup = (req, res, next) => {
   let credentials = req.body.credentials;
@@ -43,9 +51,7 @@ const signup = (req, res, next) => {
     delete user.token;
     delete user.passwordDigest;
     res.json({ user });
-  }).catch(err =>
-    next(err)
-  );
+  }).catch(makeErrorHandler(res, next));
 
 };
 
@@ -54,7 +60,8 @@ const signin = (req, res, next) => {
   let search = { email: credentials.email };
   User.findOne(search
   ).then(user =>
-    user.comparePassword(credentials.password)
+    user ? user.comparePassword(credentials.password) :
+          Promise.reject(new HttpError(404))
   ).then(user =>
     getToken().then(token => {
       user.token = token;
@@ -64,9 +71,7 @@ const signin = (req, res, next) => {
     user = user.toObject();
     delete user.passwordDigest;
     res.json({ user });
-  }).catch(err =>
-    next(err)
-  );
+  }).catch(makeErrorHandler(res, next));
 };
 
 const signout = (req, res, next) => {
@@ -89,18 +94,12 @@ const changepw = (req, res, next) => {
     token: req.currentUser.token,
   }).then(user =>
     user ? user.comparePassword(req.body.passwords.old) :
-      Promise.reject(new Error('Not found'))
+      Promise.reject(new HttpError(404))
   ).then(user =>
     user.setPassword(req.body.passwords.old)
   ).then((/* user */) =>
     res.sendStatus(200)
-  ).catch(err => {
-    if (err.message === 'Not Found') {
-      err.status = 404;
-    }
-
-    next(err);
-  });
+  ).catch(makeErrorHandler(res, next));
 };
 
 module.exports = controller({

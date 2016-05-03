@@ -3,9 +3,11 @@
 const models = require('app/models');
 const User = models.user;
 
+const MessageVerifier = require('lib/wiring/message-verifier');
+
 const decodeToken = (signedSecureToken) => {
-  let decrypted = signedSecureToken;
-  return decrypted;
+  const mv = new MessageVerifier('secure-token', process.env.SECRET_KEY);
+  return mv.verify(signedSecureToken);
 };
 
 const accessDenied = (res) => {

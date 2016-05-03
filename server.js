@@ -1,8 +1,6 @@
 'use strict';
 
-require('dotenv').load({
-  silent: true,  // suppress missing `.env` warning
-});
+require('dotenv').load();
 
 const express = require('express');
 const app = express();

@@ -12,9 +12,11 @@ const authenticate = require('./concerns/authenticate');
 
 const HttpError = require('lib/wiring/http-error');
 
+const MessageVerifier = require('lib/wiring/message-verifier');
+
 const encodeToken = (token) => {
-  let signedSecureToken = token;
-  return signedSecureToken;
+  const mv = new MessageVerifier('secure-token', process.env.SECRET_KEY);
+  return mv.generate(token);
 };
 
 const getToken = () =>

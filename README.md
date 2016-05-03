@@ -31,9 +31,17 @@ Fix any conflicts.
     includes `package.json`, various debugger configurations, and the MongoDB
     store.
 1.  Install dependencies with `npm install`.
+1.  Set a SECRET_KEY in the environment.
 1.  Run the API server with `npm start`. If you want your code to be reloaded on
     change, you should `npm install -g nodemon` and use `nodemon` instead of
     `npm start`.
+
+For development and testing, set the SECRET_KEY from the root of your
+ repository using
+
+```sh
+echo SECRET_KEY=$(/usr/local/opt/openssl/bin/openssl rand -base64 66 | tr -d '\n') >>.env
+```
 
 In order to make requests from your deployed client application, you will need
 to set `CLIENT_URL` in the environment.

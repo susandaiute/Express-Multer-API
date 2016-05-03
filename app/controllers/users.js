@@ -12,6 +12,11 @@ const authenticate = require('./concerns/authenticate');
 
 const HttpError = require('lib/wiring/http-error');
 
+const encodeToken = (token) => {
+  let signedSecureToken = token;
+  return signedSecureToken;
+};
+
 const getToken = () =>
   new Promise((resolve, reject) =>
     crypto.randomBytes(16, (err, data) =>
@@ -70,6 +75,7 @@ const signin = (req, res, next) => {
   ).then(user => {
     user = user.toObject();
     delete user.passwordDigest;
+    user.token = encodeToken(user.token);
     res.json({ user });
   }).catch(makeErrorHandler(res, next));
 };

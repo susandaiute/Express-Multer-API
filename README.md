@@ -36,7 +36,7 @@ Fix any conflicts.
     `npm start`.
 
 In order to make requests from your deployed client application, you will need
-to set `GITHUB_IO_URL` in the environment.
+to set `CLIENT_URL` in the environment.
 
 ## Structure
 

@@ -48,11 +48,11 @@ const makeErrorHandler = (res, next) =>
 
 const signup = (req, res, next) => {
   let credentials = req.body.credentials;
-  let user = { email: credentials.email };
+  let user = { email: credentials.email, password: credentials.password };
   getToken().then(token =>
     user.token = token
   ).then(() =>
-    new User(user).setPassword(credentials.password)
+    new User(user).save()
   ).then(newUser => {
     let user = newUser.toObject();
     delete user.token;
@@ -103,9 +103,10 @@ const changepw = (req, res, next) => {
   }).then(user =>
     user ? user.comparePassword(req.body.passwords.old) :
       Promise.reject(new HttpError(404))
-  ).then(user =>
-    user.setPassword(req.body.passwords.new)
-  ).then((/* user */) =>
+  ).then(user => {
+    user.password = req.body.passwords.new;
+    return user.save();
+  }).then((/* user */) =>
     res.sendStatus(200)
   ).catch(makeErrorHandler(res, next));
 };

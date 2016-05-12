@@ -8,6 +8,9 @@ const fileType = require('file-type');
 
 const awsS3Upload = require('../lib/awsfile');
 
+const mongoose = require('../app/middleware/mongoose');
+const Upload = require('../app/models/upload.js');
+
 // always return object with extension and mime.
 // fileType returns null when no match
 const mimeType = (data) =>
@@ -17,6 +20,7 @@ const mimeType = (data) =>
   }, fileType(data));
 
 let filename = process.argv[2] || '';
+let title = process.argv[3] || 'No Title';
 
 const readFile = (filename) =>
   new Promise((resolve, reject) => {
@@ -36,6 +40,13 @@ readFile(filename)
     return file;
   })
   .then(awsS3Upload)
-  .then((s3response) =>
-    console.log(s3response))
-  .catch(console.error);
+  .then((s3response) => {
+  let upload = {
+    location: s3response.Location,
+    title: title,
+  };
+  return Upload.create(upload);
+  })
+  .then(console.log)
+  .catch(console.error)
+  .then(() => mongoose.connection.close());

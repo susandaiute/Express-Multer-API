@@ -3,7 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "start": "./bin/express server"
+    "start": "./bin/express server",
+    "uploadS3": "node ./bin/uploadS3.js"
   },
   "dependencies": {
     "bcrypt": "^0.8.5",

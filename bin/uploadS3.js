@@ -15,6 +15,14 @@ const readFile = (filename) =>
   });
 });
 
+const awsS3UploadOptions = {
+  ACL: 'public-read',
+  Body: '',
+  Bucket: 'susandaiute',
+  ContentType: 'application/octet-stream',
+  Key: 'test/test.bin'
+};
+
 readFile(filename)
 .then((data) =>
 console.log(`${filename} is ${data.length} bytes long`))

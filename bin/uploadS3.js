@@ -67,12 +67,14 @@ const awsUpload = (file) =>
   );
 
 readFile(filename)
-.then((data) => {
-  let file = mimeType(data);
-  file.data = data;
-  return file;
-})
-.then(awsUpload)
-.then((s3response) =>
-  console.log(s3response))
-.catch(console.error);
+  .then((data) => {
+    let file = mimeType(data);
+    file.data = data;
+    return file;
+  })
+  .then(awsUpload)
+  .then((s3response) =>
+    console.log(s3response))
+  .catch(console.error);
+
+  
